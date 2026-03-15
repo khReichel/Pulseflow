@@ -98,7 +98,7 @@ Pulseflow is actively evolving, and your feedback is highly appreciated!
 
 If you encounter any issues, discover a bug, or have a great idea for a new analysis feature, please let us know. We welcome all feedback to make this tool better for everyone.
 
- **[Open an Issue on our GitHub Tracker](https://github.com/khreichel/Pulseflow/issues)**
+ **[Open an Issue on our GitHub Tracker](https://github.com/khreichel/Pulseflow/issues)**
 
 When reporting bugs, please provide as much context as possible (steps to reproduce, logs, or error messages). For feature requests, describe the use case and how it would benefit your workflow.
 
