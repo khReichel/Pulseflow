@@ -37,6 +37,23 @@ services:
     networks:
       - pulseflow-network
 
+  # --- PulseFlow Importer (Run on demand: docker compose run importer) ---
+  importer:
+    image: ghcr.io/khreichel/pulseflow-backend:latest
+    container_name: pulseflow-importer
+    profiles:
+      - tools
+    volumes:
+      - ./config:/app/config:ro
+      - ./data:/app/data
+      - ./exports:/app/export
+      - ./repo:/repo:ro
+    environment:
+      - PULSEFLOW_CONFIG=/app/config/config.yaml
+    entrypoint: [ "python", "src/import_export/database_importer.py" ]
+    networks:
+      - pulseflow-network
+
 networks:
   pulseflow-network:
     driver: bridge
