@@ -3,7 +3,7 @@
 Management Script Usage
 =======================
 
-The ``manage.sh`` script is a utility for controlling the lifecycle of the Pulseflow Docker containers. It provides simple commands for common operations like starting, stopping, and updating the application.
+The ``manage.sh`` script is a utility for controlling the lifecycle of the RepoLens Docker containers. It provides simple commands for common operations like starting, stopping, and updating the application.
 
 Usage
 -----
@@ -33,27 +33,25 @@ Here is a list of the commands supported by the ``manage.sh`` script:
 
       ./manage.sh down
 
-**import <path>**
+**import [path]**
    Runs the full data import process for a local repository. This command takes the path to the repository on your host machine, mounts it into the container, and runs both the configuration and analysis import steps.
 
-   *Note: After the import is complete, the generated DuckDB database files will be located in the ``data/update_data/`` directory (or as defined by ``db_update_path`` in your ``config.yaml``). Reference the ``config.yaml`` or :ref:`pulseflow_config` for more details.*
+   If the path is omitted, the script attempts to read the ``repo_path`` from ``repolens_config.yaml`` (requires ``yq``).
+
+   *Note: After the import is complete, the generated DuckDB database files will be located in the ``data/update_data/`` directory (or as defined by ``db_update_path`` in your ``config.yaml``). Reference the ``config.yaml`` or :ref:`repolens_config` for more details.*
 
    .. code-block:: bash
 
       ./manage.sh import /path/to/your/local/repo
 
-**replace <source_dir> <new_basename> <old_basename>**
-   Safely replaces the analysis and configuration database files. This command is designed for scenarios where you are migrating from one set of database files to another, potentially with a different naming convention.
+**refresh**
+   Automatically swaps the staging database files (from ``db_update_path``) into the production environment (``db_path``). This command requires the ``yq`` utility to be installed on your host machine to parse the configuration file.
 
    .. code-block:: bash
 
-      ./manage.sh replace /path/to/new_db_dir new_pulseflow old_pulseflow
+      ./manage.sh refresh
 
-   *   **<source_dir>**: The directory containing the new database files (e.g., ``new_pulseflow.duckdb`` and ``new_pulseflow_config.duckdb``).
-   *   **<new_basename>**: The base name of the new database files.
-   *   **<old_basename>**: The base name of the existing database files that will be replaced.
-
-   The script performs a transactional replacement by backing up the old files before copying the new ones. It also includes error handling to attempt a rollback if something goes wrong.
+   The script stops the backend, creates a backup of the current production databases, moves the new files from the staging area to the production area, and restarts the backend.
 
 **update**
    Rebuilds the Docker images and restarts all services. This is useful when you have made changes to the source code.

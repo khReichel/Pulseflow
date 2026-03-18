@@ -3,9 +3,9 @@
 Deployment and Installation Guide
 =================================
 
-This guide provides instructions on how to set up and run the Pulseflow application using Docker images from the public registry. 
+This guide provides instructions on how to set up and run the RepoLens application using Docker images from the public registry. 
 
-Pulseflow is composed of three main services:
+RepoLens is composed of three main services:
 
 * a **React.js** frontend
 * a Python **FastAPI** backend and
@@ -23,20 +23,20 @@ Before starting, ensure you have the following installed on your system:
 Installation via Docker Registry
 --------------------------------
 
-The primary way to install Pulseflow is by pulling pre-built images from the GitHub Container Registry. Follow these steps to get your instance running:
+The primary way to install RepoLens is by pulling pre-built images from the GitHub Container Registry. Follow these steps to get your instance running:
 
-1. **Download the Pulseflow Repository**
+1. **Download the RepoLens Repository**
    
    Clone the repository from GitHub to get the necessary deployment files (``docker-compose.yml``, ``manage.sh``, and ``nginx.conf``).
 
    .. code-block:: bash
 
-      git clone https://github.com/khReichel/Pulseflow.git
-      cd Pulseflow
+      git clone https://github.com/khReichel/RepoLens.git
+      cd RepoLens
 
-2. **Configure Pulseflow**
+2. **Configure RepoLens**
 
-   An example configuration is provided in the ``config`` folder. Copy and modify it to suit your project needs. Documentation for all configuration parameters can be found in the provided ``config.yaml`` or in :ref:`pulseflow_config`.
+   An example configuration is provided in the ``config`` folder. Copy and modify it to suit your project needs. Documentation for all configuration parameters can be found in the provided ``config.yaml`` or in :ref:`repolens_config`.
 
    .. code-block:: bash
 
@@ -48,7 +48,7 @@ The primary way to install Pulseflow is by pulling pre-built images from the Git
 
 3. **Link your Repository (Optional)**
 
-   To make it easier for the Docker containers to find the repository you want to analyze, create a symlink named ``repo`` in the Pulseflow root directory.
+   To make it easier for the Docker containers to find the repository you want to analyze, create a symlink named ``repo`` in the RepoLens root directory.
 
    .. code-block:: bash
 
@@ -66,7 +66,7 @@ The primary way to install Pulseflow is by pulling pre-built images from the Git
 
 5. **Start the Services**
 
-   Launch Pulseflow in detached mode:
+   Launch RepoLens in detached mode:
 
    .. code-block:: bash
 
@@ -83,16 +83,16 @@ The primary way to install Pulseflow is by pulling pre-built images from the Git
 
    *Note: After the import is complete, the generated DuckDB database files will be located in the ``data/update_data/`` directory (or as defined by ``db_update_path`` in your ``config.yaml``).*
 
-7. **Replace Database (Mandatory for Initial Setup)**
+7. **Refresh Database (Mandatory for Initial Setup)**
 
-   Since you are starting with a fresh installation, you have no pre-analyzed databases. Therefore, you must move the newly generated databases from the update directory to the active ``data/`` directory. 
-   Use the ``replace`` command, which safely stops the backend, backs up any existing files, copies the new ones, and restarts the service.
+   Since you are starting with a fresh installation, you have no pre-analyzed databases. Therefore, you must move the newly generated databases from the update directory to the active production directory. 
+   Use the ``refresh`` command, which automatically stops the backend, backs up any existing files, swaps the new ones from the staging area, and restarts the service.
+
+   *Note: This command requires the ``yq`` utility to be installed on your host machine.*
 
    .. code-block:: bash
 
-      ./manage.sh replace ./data/update_data pulseflow pulseflow
-
-   *Note: The ``replace`` command expects: source directory, new file basename, and old file basename. In a default setup, both basenames are ``pulseflow``.*
+      ./manage.sh refresh
 
 8. **Check Application URL**
 
@@ -113,5 +113,5 @@ Maintenance & Troubleshooting
    :maxdepth: 1
    :caption: Guides:
 
-   pulseflow_config
+   repolens_config
    manage_script

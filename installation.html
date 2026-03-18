@@ -6,12 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deployment and Installation Guide &mdash; pulseflow 0.1.0 documentation</title>
+  <title>Deployment and Installation Guide &mdash; repolens 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
-    <link rel="canonical" href="https://khreichel.github.io/Pulseflow/installation.html" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://khreichel.github.io/RepoLens/installation.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=01f34227"></script>
@@ -20,8 +21,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Pulseflow Configuration File" href="pulseflow_config.html" />
-    <link rel="prev" title="Welcome to Pulseflow’s documentation!" href="index.html" /> 
+    <link rel="next" title="RepoLens Configuration File" href="repolens_config.html" />
+    <link rel="prev" title="Welcome to RepoLens’s documentation!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -33,7 +34,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            pulseflow
+            repolens
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -49,7 +50,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation-via-docker-registry">Installation via Docker Registry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#maintenance-troubleshooting">Maintenance &amp; Troubleshooting</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pulseflow_config.html">Pulseflow Configuration File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="repolens_config.html">RepoLens Configuration File</a></li>
 <li class="toctree-l3"><a class="reference internal" href="manage_script.html">Management Script Usage</a></li>
 </ul>
 </li>
@@ -58,7 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="importer_guide.html">Data Import &amp; Update Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Dashboard User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analysis.html">Understanding Pulseflow Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Understanding RepoLens Analyses</a></li>
 </ul>
 
         </div>
@@ -67,7 +68,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">pulseflow</a>
+          <a href="index.html">repolens</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -87,8 +88,8 @@
              
   <section id="deployment-and-installation-guide">
 <span id="deployment-guide"></span><h1>Deployment and Installation Guide<a class="headerlink" href="#deployment-and-installation-guide" title="Link to this heading"></a></h1>
-<p>This guide provides instructions on how to set up and run the Pulseflow application using Docker images from the public registry.</p>
-<p>Pulseflow is composed of three main services:</p>
+<p>This guide provides instructions on how to set up and run the RepoLens application using Docker images from the public registry.</p>
+<p>RepoLens is composed of three main services:</p>
 <ul class="simple">
 <li><p>a <strong>React.js</strong> frontend</p></li>
 <li><p>a Python <strong>FastAPI</strong> backend and</p></li>
@@ -105,17 +106,17 @@
 </section>
 <section id="installation-via-docker-registry">
 <h2>Installation via Docker Registry<a class="headerlink" href="#installation-via-docker-registry" title="Link to this heading"></a></h2>
-<p>The primary way to install Pulseflow is by pulling pre-built images from the GitHub Container Registry. Follow these steps to get your instance running:</p>
+<p>The primary way to install RepoLens is by pulling pre-built images from the GitHub Container Registry. Follow these steps to get your instance running:</p>
 <ol class="arabic">
-<li><p><strong>Download the Pulseflow Repository</strong></p>
+<li><p><strong>Download the RepoLens Repository</strong></p>
 <p>Clone the repository from GitHub to get the necessary deployment files (<code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>, <code class="docutils literal notranslate"><span class="pre">manage.sh</span></code>, and <code class="docutils literal notranslate"><span class="pre">nginx.conf</span></code>).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/khReichel/Pulseflow.git
-<span class="nb">cd</span><span class="w"> </span>Pulseflow
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/khReichel/RepoLens.git
+<span class="nb">cd</span><span class="w"> </span>RepoLens
 </pre></div>
 </div>
 </li>
-<li><p><strong>Configure Pulseflow</strong></p>
-<p>An example configuration is provided in the <code class="docutils literal notranslate"><span class="pre">config</span></code> folder. Copy and modify it to suit your project needs. Documentation for all configuration parameters can be found in the provided <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> or in <a class="reference internal" href="pulseflow_config.html#pulseflow-config"><span class="std std-ref">Pulseflow Configuration File</span></a>.</p>
+<li><p><strong>Configure RepoLens</strong></p>
+<p>An example configuration is provided in the <code class="docutils literal notranslate"><span class="pre">config</span></code> folder. Copy and modify it to suit your project needs. Documentation for all configuration parameters can be found in the provided <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> or in <a class="reference internal" href="repolens_config.html#repolens-config"><span class="std std-ref">RepoLens Configuration File</span></a>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>config
 cp<span class="w"> </span>config/config_example.yaml<span class="w"> </span>config/config.yaml
 <span class="c1"># Edit config/config.yaml with your preferred editor</span>
@@ -124,7 +125,7 @@ cp<span class="w"> </span>config/config_example.yaml<span class="w"> </span>conf
 <p><em>Note: Ensure that the ``repo_path`` in ``config.yaml`` points to ``/repo`` inside the container, and that your local repository is correctly mapped in ``docker-compose.yml``. The generated DuckDB files will be stored in the ``data/`` folder by default.</em></p>
 </li>
 <li><p><strong>Link your Repository (Optional)</strong></p>
-<p>To make it easier for the Docker containers to find the repository you want to analyze, create a symlink named <code class="docutils literal notranslate"><span class="pre">repo</span></code> in the Pulseflow root directory.</p>
+<p>To make it easier for the Docker containers to find the repository you want to analyze, create a symlink named <code class="docutils literal notranslate"><span class="pre">repo</span></code> in the RepoLens root directory.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ln<span class="w"> </span>-s<span class="w"> </span>/path/to/your/local/git-repo<span class="w"> </span>./repo
 </pre></div>
 </div>
@@ -137,7 +138,7 @@ cp<span class="w"> </span>config/config_example.yaml<span class="w"> </span>conf
 </div>
 </li>
 <li><p><strong>Start the Services</strong></p>
-<p>Launch Pulseflow in detached mode:</p>
+<p>Launch RepoLens in detached mode:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </pre></div>
 </div>
@@ -150,13 +151,13 @@ cp<span class="w"> </span>config/config_example.yaml<span class="w"> </span>conf
 </div>
 <p><em>Note: After the import is complete, the generated DuckDB database files will be located in the ``data/update_data/`` directory (or as defined by ``db_update_path`` in your ``config.yaml``).</em></p>
 </li>
-<li><p><strong>Replace Database (Mandatory for Initial Setup)</strong></p>
-<p>Since you are starting with a fresh installation, you have no pre-analyzed databases. Therefore, you must move the newly generated databases from the update directory to the active <code class="docutils literal notranslate"><span class="pre">data/</span></code> directory.
-Use the <code class="docutils literal notranslate"><span class="pre">replace</span></code> command, which safely stops the backend, backs up any existing files, copies the new ones, and restarts the service.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./manage.sh<span class="w"> </span>replace<span class="w"> </span>./data/update_data<span class="w"> </span>pulseflow<span class="w"> </span>pulseflow
+<li><p><strong>Refresh Database (Mandatory for Initial Setup)</strong></p>
+<p>Since you are starting with a fresh installation, you have no pre-analyzed databases. Therefore, you must move the newly generated databases from the update directory to the active production directory.
+Use the <code class="docutils literal notranslate"><span class="pre">refresh</span></code> command, which automatically stops the backend, backs up any existing files, swaps the new ones from the staging area, and restarts the service.</p>
+<p><em>Note: This command requires the ``yq`` utility to be installed on your host machine.</em></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./manage.sh<span class="w"> </span>refresh
 </pre></div>
 </div>
-<p><em>Note: The ``replace`` command expects: source directory, new file basename, and old file basename. In a default setup, both basenames are ``pulseflow``.</em></p>
 </li>
 <li><p><strong>Check Application URL</strong></p>
 <p>Once the containers are running and data is imported, access the application:</p>
@@ -178,7 +179,7 @@ Use the <code class="docutils literal notranslate"><span class="pre">replace</sp
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Guides:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pulseflow_config.html">Pulseflow Configuration File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="repolens_config.html">RepoLens Configuration File</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manage_script.html">Management Script Usage</a></li>
 </ul>
 </div>
@@ -189,8 +190,8 @@ Use the <code class="docutils literal notranslate"><span class="pre">replace</sp
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Pulseflow’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pulseflow_config.html" class="btn btn-neutral float-right" title="Pulseflow Configuration File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to RepoLens’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="repolens_config.html" class="btn btn-neutral float-right" title="RepoLens Configuration File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

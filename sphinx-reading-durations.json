@@ -1,10 +1,10 @@
 {
-    "analysis": 0.036,
-    "api": 0.045,
-    "importer_guide": 0.01,
+    "analysis": 0.04,
+    "api": 0.051,
+    "importer_guide": 0.013,
     "index": 0.006,
-    "installation": 0.013,
-    "manage_script": 0.027,
-    "pulseflow_config": 0.015,
+    "installation": 0.015,
+    "manage_script": 0.03,
+    "repolens_config": 0.016,
     "usage": 0.007
 }

@@ -3,14 +3,14 @@
 Data Import & Update Guide
 ==========================
 
-This guide explains how to import data into Pulseflow and how to run updates while the application is actively serving users.
+This guide explains how to import data into RepoLens and how to run updates while the application is actively serving users.
 
 The import process is responsible for two key tasks:
 
 1.  **Configuration Sync**: Loading your project settings, component definitions, and team structures from your ``config.yaml`` into the configuration database.
 2.  **Analysis Import**: Scanning your Git repository, calculating metrics (like complexity and churn), and populating the analysis database.
 
-In Pulseflow, all data extraction and updating is handled exclusively via Docker containers using the ``manage.sh`` script.
+In RepoLens, all data extraction and updating is handled exclusively via Docker containers using the ``manage.sh`` script.
 
 Initial Data Import
 -------------------
@@ -24,7 +24,7 @@ To run the initial import for a repository, use the ``manage.sh`` script. This c
    ./manage.sh import /absolute/path/to/your/repository
 
 .. tip::
-   Instead of passing the absolute path every time, you can create a symlink named ``repo`` in the Pulseflow root directory pointing to your target repository:
+   Instead of passing the absolute path every time, you can create a symlink named ``repo`` in the RepoLens root directory pointing to your target repository:
    
    .. code-block:: bash
    
@@ -40,9 +40,9 @@ To run the initial import for a repository, use the ``manage.sh`` script. This c
 Incremental Update Workflow (Zero Downtime)
 -------------------------------------------
 
-Pulseflow is designed to support background updates without requiring you to shut down the frontend or the backend API.
+RepoLens is designed to support background updates without requiring you to shut down the frontend or the backend API.
 
-The importer operates incrementally: it checks which commits are already present in the database and only analyzes new commits. To ensure this process is fast and doesn't lock the live database, Pulseflow uses two separate database paths defined in your ``config.yaml``:
+The importer operates incrementally: it checks which commits are already present in the database and only analyzes new commits. To ensure this process is fast and doesn't lock the live database, RepoLens uses two separate database paths defined in your ``config.yaml``:
 
 *   ``project.db_path``: The directory where the *live* databases used by the backend reside (e.g., ``/app/data``).
 *   ``project.db_update_path``: The directory where the importer writes new data (e.g., ``/app/data/update_data``).
@@ -52,7 +52,7 @@ The importer operates incrementally: it checks which commits are already present
 1. **Prepare the Update Directory**
    For the incremental import to work efficiently, the importer needs to know the current state. Therefore, the live databases should be copied into the update directory before starting the import.
 
-   *Note: If you are using the default configuration paths provided by Pulseflow, this directory structure and file separation is handled automatically.*
+   *Note: If you are using the default configuration paths provided by RepoLens, this directory structure and file separation is handled automatically.*
 
 2. **Run the Importer**
    Run the import command just like the initial import. The script will detect the existing databases in the ``db_update_path``, identify new commits in the repository, and append the new analysis data.
@@ -61,16 +61,16 @@ The importer operates incrementally: it checks which commits are already present
 
       ./manage.sh import /absolute/path/to/your/repository
 
-3. **Replace the Live Database**
+3. **Refresh the Live Database**
    Once the importer has finished running in the background and the databases in the ``db_update_path`` are fully updated, you need to swap them with the live databases.
 
-   Use the ``replace`` command to perform a safe, transactional swap. This will briefly pause the backend, back up the old databases, copy the new ones in, and restart the backend.
+   Use the ``refresh`` command to perform an automated swap. This will briefly pause the backend, back up the old databases, move the new ones from the staging area to the production area, and restart the backend.
 
    .. code-block:: bash
 
-      # Usage: ./manage.sh replace <source_dir> <new_basename> <old_basename>
+      ./manage.sh refresh
 
-      ./manage.sh replace ./data/update_data pulseflow pulseflow
+   *Note: This command requires the ``yq`` utility to be installed on your host machine to parse the configuration file.*
 
 By following this workflow, your users can continue analyzing the existing data on the dashboard while the heavy lifting of parsing new commits happens transparently in the background.
 
