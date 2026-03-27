@@ -2,7 +2,7 @@ project:
   name: "mongodb"
   db_path: "/app/data"
   db_update_path: "/app/data/update_data"
-  db_basename: "pulseflow"
+  db_basename: "calyntro"
   # The path below must be accessible on the host and correctly mapped in docker-compose
   repo_path: "/repo"
   branch: "master"
