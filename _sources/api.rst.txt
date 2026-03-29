@@ -616,6 +616,174 @@ Returns ownership statistics aggregated by module.
      ]
    }
 
+Knowledge Silos (Files)
+~~~~~~~~~~~~~~~~~~~~~~~
+Returns all files classified as a knowledge silo — files where a single developer accounts for
+at least ``silo_threshold`` (default 80 %) of all commits. Results are ordered by ownership
+percentage descending.
+
+*   **URL:** ``/v1/analysis/silos/files``
+*   **Method:** ``POST``
+
+**Request Body:**
+
+.. code-block:: json
+
+   {
+     "start_date": "2023-01-01T00:00:00",
+     "end_date": "2023-12-31T23:59:59",
+     "module_name": "optional_module_name",
+     "silo_threshold": 0.80,
+     "min_commits": 5
+   }
+
+.. list-table:: Request Parameters
+   :header-rows: 1
+   :widths: 20 10 70
+
+   * - Parameter
+     - Required
+     - Description
+   * - ``start_date``
+     - No
+     - ISO 8601 timestamp. Only commits on or after this date are considered.
+   * - ``end_date``
+     - No
+     - ISO 8601 timestamp. Only commits on or before this date are considered.
+   * - ``module_name``
+     - No
+     - Restrict analysis to a specific component name.
+   * - ``silo_threshold``
+     - No
+     - Fractional ownership threshold (0.5–1.0). A file is a silo when the top contributor meets or exceeds this value. Default: ``0.80``.
+   * - ``min_commits``
+     - No
+     - Minimum total commits a file must have to be included. Filters out rarely touched files. Default: ``5``.
+
+**Response:**
+
+.. code-block:: json
+
+   {
+     "items": [
+       {
+         "file_path": "src/core/engine.py",
+         "component_name": "core",
+         "silo_developer": "alice",
+         "ownership_pct": 94.3,
+         "total_commits": 87,
+         "risk": "high"
+       }
+     ]
+   }
+
+.. list-table:: Response Fields
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Field
+     - Description
+   * - ``file_path``
+     - Path to the silo file.
+   * - ``component_name``
+     - The architectural component this file belongs to (``null`` if unassigned).
+   * - ``silo_developer``
+     - The developer who holds sole knowledge of this file.
+   * - ``ownership_pct``
+     - Percentage of commits attributed to the silo developer (0–100).
+   * - ``total_commits``
+     - Total number of commits to this file within the filtered time window.
+   * - ``risk``
+     - Risk classification: ``low`` (80–89 %), ``medium`` (90–94 %), ``high`` (95–99 %), ``critical`` (100 %).
+
+Knowledge Silos (Modules)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Returns the silo density for each component — the fraction of files within the module that are
+knowledge silos — and identifies which developer is responsible for the most silos in that module.
+Results are ordered by silo ratio descending.
+
+*   **URL:** ``/v1/analysis/silos/modules``
+*   **Method:** ``POST``
+*   **Request Body:** Same as *Knowledge Silos (Files)*.
+
+**Response:**
+
+.. code-block:: json
+
+   {
+     "items": [
+       {
+         "component_name": "core",
+         "total_files": 24,
+         "silo_files": 9,
+         "silo_ratio": 0.375,
+         "dominant_silo_developer": "alice",
+         "risk": "medium"
+       }
+     ]
+   }
+
+.. list-table:: Response Fields
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Field
+     - Description
+   * - ``component_name``
+     - Name of the architectural component.
+   * - ``total_files``
+     - Total number of distinct files active in the module within the time window.
+   * - ``silo_files``
+     - Number of files in the module that are classified as silos.
+   * - ``silo_ratio``
+     - Fraction of files that are silos (``silo_files / total_files``).
+   * - ``dominant_silo_developer``
+     - The developer responsible for the highest number of silos within this module.
+   * - ``risk``
+     - Risk derived from ``silo_ratio``: ``low`` (< 25 %), ``medium`` (25–49 %), ``high`` (50–74 %), ``critical`` (≥ 75 %).
+
+Knowledge Silos (Developers)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Returns the silo footprint of each developer — how many files and modules they are the sole
+knowledge holder of. Results are ordered by silo file count descending.
+
+*   **URL:** ``/v1/analysis/silos/developers``
+*   **Method:** ``POST``
+*   **Request Body:** Same as *Knowledge Silos (Files)*.
+
+**Response:**
+
+.. code-block:: json
+
+   {
+     "items": [
+       {
+         "developer": "alice",
+         "silo_file_count": 14,
+         "silo_module_count": 3,
+         "avg_ownership_pct": 91.7,
+         "risk": "high"
+       }
+     ]
+   }
+
+.. list-table:: Response Fields
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Field
+     - Description
+   * - ``developer``
+     - Developer name.
+   * - ``silo_file_count``
+     - Number of files for which this developer is the sole knowledge holder.
+   * - ``silo_module_count``
+     - Number of distinct components containing at least one of their silo files.
+   * - ``avg_ownership_pct``
+     - Average ownership percentage across all their silo files.
+   * - ``risk``
+     - Risk derived from ``silo_file_count``: ``low`` (1–2), ``medium`` (3–9), ``high`` (10–19), ``critical`` (≥ 20).
+
 Module Ownership by Teams
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 Shows how much of each module is owned by different teams (Team-centric view).

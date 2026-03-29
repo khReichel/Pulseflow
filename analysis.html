@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Understanding Calyntro Analyses &mdash; calyntro 0.1.0 documentation</title>
+  <title>Understanding Calyntro Analyses &mdash; calyntro 0.1.10 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://khreichel.github.io/Calyntro/analysis.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/documentation_options.js?v=bafade30"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -70,6 +70,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#team-knowledge-ownership">Team &amp; Knowledge (Ownership)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#code-ownership">Code Ownership</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#knowledge-fragmentation">Knowledge Fragmentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#knowledge-silos">Knowledge Silos</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ownership-by-teams">Module Ownership by Teams</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#top-team-contributors">Top Team Contributors</a></li>
 </ul>
@@ -244,6 +245,29 @@
 <li><p><strong>How to Interpret</strong>: Too many contributors (fragmentation) often leads to a “diffusion of responsibility” and higher communication overhead. It may indicate that a component lacks a clear owner or is a “junk drawer” for unrelated changes.</p></li>
 </ul>
 </section>
+<section id="knowledge-silos">
+<h3>Knowledge Silos<a class="headerlink" href="#knowledge-silos" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>UI Name</strong>: Knowledge Silos</p></li>
+<li><p><strong>What it Measures</strong>: Identifies files and modules where a single developer is responsible for an overwhelming share of commits — making that person the <strong>sole knowledge holder</strong>. A file is classified as a silo when one developer’s contribution meets or exceeds a configurable ownership threshold (default: <strong>80 %</strong>). Files with very few total commits are excluded to filter out noise.</p></li>
+<li><p><strong>Risk Levels</strong>: Each silo entry carries a risk classification based on ownership concentration:</p>
+<ul>
+<li><p><strong>Low</strong> (80–89 %): One clear owner, but some secondary knowledge exists.</p></li>
+<li><p><strong>Medium</strong> (90–94 %): Near-exclusive ownership — onboarding a second contributor is advisable.</p></li>
+<li><p><strong>High</strong> (95–99 %): Essentially a single point of failure.</p></li>
+<li><p><strong>Critical</strong> (100 %): Absolute sole ownership — no other developer has ever touched this file.</p></li>
+</ul>
+</li>
+<li><p><strong>How to Interpret</strong>:</p>
+<ul>
+<li><p><strong>File view</strong>: Lists every silo file sorted by ownership percentage. Use this to find the individual files with the highest Bus Factor risk and identify which developers carry the most concentrated knowledge.</p></li>
+<li><p><strong>Module view</strong>: Shows the fraction of silo files within each component (<code class="docutils literal notranslate"><span class="pre">silo_ratio</span></code>). A module with a high silo ratio indicates a structural knowledge risk even if no single file is catastrophic by itself.</p></li>
+<li><p><strong>Combining with Code Ownership and Hotspot data</strong>: A silo file that is <em>also</em> a hotspot (high churn + high complexity) is the most dangerous combination — difficult code that only one person understands.</p></li>
+</ul>
+</li>
+<li><p><strong>Recommended Actions</strong>: For critical silos, schedule a knowledge transfer session (pair programming, documentation sprint) before the key developer transitions off the team.</p></li>
+</ul>
+</section>
 <section id="module-ownership-by-teams">
 <h3>Module Ownership by Teams<a class="headerlink" href="#module-ownership-by-teams" title="Link to this heading"></a></h3>
 <ul class="simple">
@@ -294,7 +318,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, karl-heinz reichel.</p>
+    <p>&#169; Copyright 2025-2026, karl-heinz reichel.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

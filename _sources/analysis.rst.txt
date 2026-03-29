@@ -119,6 +119,24 @@ Knowledge Fragmentation
 *   **What it Measures**: The number of distinct developers who have modified a component.
 *   **How to Interpret**: Too many contributors (fragmentation) often leads to a "diffusion of responsibility" and higher communication overhead. It may indicate that a component lacks a clear owner or is a "junk drawer" for unrelated changes.
 
+Knowledge Silos
+^^^^^^^^^^^^^^^
+*   **UI Name**: Knowledge Silos
+*   **What it Measures**: Identifies files and modules where a single developer is responsible for an overwhelming share of commits — making that person the **sole knowledge holder**. A file is classified as a silo when one developer's contribution meets or exceeds a configurable ownership threshold (default: **80 %**). Files with very few total commits are excluded to filter out noise.
+*   **Risk Levels**: Each silo entry carries a risk classification based on ownership concentration:
+
+    *   **Low** (80–89 %): One clear owner, but some secondary knowledge exists.
+    *   **Medium** (90–94 %): Near-exclusive ownership — onboarding a second contributor is advisable.
+    *   **High** (95–99 %): Essentially a single point of failure.
+    *   **Critical** (100 %): Absolute sole ownership — no other developer has ever touched this file.
+
+*   **How to Interpret**:
+
+    *   **File view**: Lists every silo file sorted by ownership percentage. Use this to find the individual files with the highest Bus Factor risk and identify which developers carry the most concentrated knowledge.
+    *   **Module view**: Shows the fraction of silo files within each component (``silo_ratio``). A module with a high silo ratio indicates a structural knowledge risk even if no single file is catastrophic by itself.
+    *   **Combining with Code Ownership and Hotspot data**: A silo file that is *also* a hotspot (high churn + high complexity) is the most dangerous combination — difficult code that only one person understands.
+*   **Recommended Actions**: For critical silos, schedule a knowledge transfer session (pair programming, documentation sprint) before the key developer transitions off the team.
+
 Module Ownership by Teams
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 *   **UI Name**: Module Ownership by Teams
