@@ -55,13 +55,16 @@ Calyntro provides a multi-dimensional view of your software project across **Fil
 
 Calyntro is distributed as a set of pre-built Docker containers, making it easy to deploy without needing to build from source.
 
-1. **Download the Release:** Get the latest `docker-compose.yml`, `manage.sh`, and configuration templates from our releases page.
-2. **Configure:** Edit the `config/config.yaml` to point to your repository and define your modules.
-3. **Analyze:** Run `./manage.sh import` to analyze your repository history.
-4. **Refresh:** Run `./manage.sh refresh` to bring analysis in place.
-5. **Launch:** Run `./manage.sh up` to start the dashboard.
+*Prerequisite: Ensure you have Docker and Docker Compose installed.*
 
-Open your browser at **`http://localhost`** to explore your data.
+1. **Checkout the Repository:** Clone the current repository and change to the checkout directory.
+2. **Pull latest images:** Run `./manage.sh pull-latest` to pull the latest pre-built containers from the registry.
+3. **Setup your Configuration:** Create your `config.yaml` using `config_example.yaml` as a template.
+4. **Analyze:** Run `./manage.sh import` to analyze your repository history.
+5. **Refresh:** Run `./manage.sh refresh` to bring analysis in place.
+6. **Launch:** Run `./manage.sh up` to start the dashboard.
+
+Open your browser at **`http://your_ip_number`** to explore your data.
 
 ---
 
