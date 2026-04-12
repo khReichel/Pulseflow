@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Overview &mdash; calyntro 0.1.10 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://khreichel.github.io/Calyntro/dashboard_overview.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=bafade30"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/js/analytics.js?v=ece56f80"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="Dashboard User Guide" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            calyntro
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="importer_guide.html">Setup &amp; Update Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Dashboard User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dashboard Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#kpi-cards">KPI Cards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#total-commits"><strong>Total Commits</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#codebase-age"><strong>Codebase Age</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#maintainability"><strong>Maintainability</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#knowledge-risk"><strong>Knowledge Risk</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#trend-sparklines">Trend Sparklines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#warnings-panel">Warnings Panel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-endpoints">API Endpoints</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Understanding Calyntro Analyses</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">calyntro</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Dashboard Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dashboard_overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dashboard-overview">
+<span id="id1"></span><h1>Dashboard Overview<a class="headerlink" href="#dashboard-overview" title="Link to this heading"></a></h1>
+<p>The Dashboard is the entry point of the Calyntro UI. It provides an at-a-glance health report of your repository without requiring any prior knowledge of the underlying analyses. All values are pre-computed by the backend; the dashboard itself performs no aggregation.</p>
+<img alt="Calyntro Dashboard Overview" class="align-center" src="_images/dashboard_overview.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The layout consists of three horizontal sections:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────────────────────┐
+│  KPI Cards (4)                                       │
+│  Total Commits │ Codebase Age │ Maintainability │    │
+│  Knowledge Risk                                      │
+├──────────────────────────────────────────────────────┤
+│  Trend Sparklines (3 panels, shared x-axis)          │
+│  Complexity · Lines of Code · Silo Ratio             │
+├──────────────────────────────────────────────────────┤
+│  Warnings (top 5, ranked by severity)                │
+└──────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p>The date range used for all three sections is controlled by the global date filter at the top of the page.</p>
+<hr class="docutils" />
+<section id="kpi-cards">
+<h2>KPI Cards<a class="headerlink" href="#kpi-cards" title="Link to this heading"></a></h2>
+<p>The four KPI cards report the current state of the most critical codebase health indicators. Each card shows a <strong>current value</strong> and a <strong>trend badge</strong> that compares the current value against the equivalent value 30 days earlier.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 25.0%" />
+<col style="width: 20.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Card</p></th>
+<th class="head"><p>What it Measures</p></th>
+<th class="head"><p>Trend Colour</p></th>
+<th class="head"><p>Click Target</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Total Commits</strong></p></td>
+<td><p>Number of distinct commits in the selected period</p></td>
+<td><p>Green = up, Red = down</p></td>
+<td><p><a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Module Commits analysis</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Codebase Age</strong></p></td>
+<td><p>Average age of files in days (first commit to last commit)</p></td>
+<td><p>Neutral</p></td>
+<td><p><a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Age analysis</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Maintainability</strong></p></td>
+<td><p>Average Cognitive Complexity across active files</p></td>
+<td><p>Green = down, Red = up</p></td>
+<td><p><a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Complexity analysis</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Knowledge Risk</strong></p></td>
+<td><p>Percentage of files classified as knowledge silos</p></td>
+<td><p>Green = down, Red = up</p></td>
+<td><p><a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Knowledge Silos (Module) analysis</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>Clicking any KPI card navigates to the corresponding detail view, pre-filtered to the current date range.</p>
+<section id="total-commits">
+<h3><strong>Total Commits</strong><a class="headerlink" href="#total-commits" title="Link to this heading"></a></h3>
+<p>Counts the number of distinct commits in the selected period. The trend badge shows the relative change compared to the equivalent metric 30 days prior (i.e., using the same start date but an end date 30 days earlier).</p>
+<p>A declining commit count is not automatically negative — it can indicate that the team has shifted from feature work to stabilisation. Use the Trend Sparklines and Warnings to contextualise the signal.</p>
+</section>
+<section id="codebase-age">
+<h3><strong>Codebase Age</strong><a class="headerlink" href="#codebase-age" title="Link to this heading"></a></h3>
+<p>Reports the average age of all files that were touched in the selected period, where <em>age</em> is defined as the number of days between a file’s first commit and its most recent commit. This is a measure of how long files have been in continuous development.</p>
+<p>A rising Codebase Age indicates that the project is maturing and that long-lived files continue to accumulate changes — often a sign of stable-but-complex core components. A sudden drop indicates significant new file creation.</p>
+</section>
+<section id="maintainability">
+<h3><strong>Maintainability</strong><a class="headerlink" href="#maintainability" title="Link to this heading"></a></h3>
+<p>Reports the average Cognitive Complexity (see <a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Complexity</span></a>) across all files that were active in the selected period, using the most recent complexity snapshot per file. Lower is better.</p>
+<p>The trend badge is coloured <strong>red when the value rises</strong> (code is becoming harder to maintain) and <strong>green when it falls</strong> (refactoring is paying off).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>“Maintainability” is intentionally outcome-oriented. The underlying metric is Cognitive Complexity — how difficult a human finds it to read and reason about the code — not Cyclomatic Complexity or raw line count. See <a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Complexity</span></a> for the full metric definition.</p>
+</div>
+</section>
+<section id="knowledge-risk">
+<h3><strong>Knowledge Risk</strong><a class="headerlink" href="#knowledge-risk" title="Link to this heading"></a></h3>
+<p>Reports the percentage of files in the repository that are classified as <strong>knowledge silos</strong> — files where a single developer is responsible for 80 % or more of all commits over the file’s lifetime (minimum 5 commits required to qualify).</p>
+<p>Unlike the other KPI cards, Knowledge Risk is a <strong>cumulative, stock metric</strong>: it reflects the state of the entire codebase as of the current date, not only the files that were touched during the selected period. A file established as a silo five years ago remains a silo today unless a second developer actively takes over ownership. The trend badge compares the cumulative silo ratio as of today against the cumulative silo ratio 30 days ago.</p>
+<p>The trend badge is coloured <strong>red when the value rises</strong> (knowledge is becoming more concentrated) and <strong>green when it falls</strong> (ownership is being distributed).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A Knowledge Risk value above 30 % combined with a rising trend is a Bus Factor warning at the project level. Navigate to the <a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Knowledge Silos</span></a> view to identify which specific files and developers are driving the concentration.</p>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="trend-sparklines">
+<h2>Trend Sparklines<a class="headerlink" href="#trend-sparklines" title="Link to this heading"></a></h2>
+<p>The three sparkline panels sit below the KPI cards and share a common time axis. Each panel shows a time series bucketed in 30-day intervals over the selected date range, with a <strong>current value</strong> and a <strong>period-over-period badge</strong> that compares the most recent bucket to the one immediately before it.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Panel</p></th>
+<th class="head"><p>What it Shows</p></th>
+<th class="head"><p>Rising Trend Interpretation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Complexity</strong></p></td>
+<td><p>Average Cognitive Complexity of all files active per bucket</p></td>
+<td><p>Code is becoming harder to maintain</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Lines of Code</strong></p></td>
+<td><p>Total net LOC across all files active per bucket</p></td>
+<td><p>Codebase is growing</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Silo Ratio</strong></p></td>
+<td><p>Cumulative percentage of silo files as of each bucket end date</p></td>
+<td><p>Knowledge is becoming more centralised</p></td>
+</tr>
+</tbody>
+</table>
+<p>The badge next to each sparkline (e.g., <em>+3.2 %</em>) reflects the change from the previous bucket — the same 30-day window as the KPI card trend badges. This keeps the two sections directionally consistent: the sparkline badge and the KPI badge should agree on the direction of change.</p>
+<p><strong>Reading the Sparklines Together</strong></p>
+<p>The three panels are most informative when read in combination:</p>
+<ul class="simple">
+<li><p><strong>Rising Complexity + Rising LOC</strong>: New code is being added faster than it is being simplified. If sustained, this indicates uncontrolled growth and declining maintainability. Check the Maintainability KPI and the Scatter Analysis for the worst offenders.</p></li>
+<li><p><strong>Rising Silo Ratio + Flat Commits</strong>: Development is slowing while knowledge is concentrating. The codebase is drifting toward a single point of failure. Review the Knowledge Silos analysis for which files are contributing to the ratio.</p></li>
+<li><p><strong>Stable Complexity + Falling LOC</strong>: Active refactoring or cleanup is underway. The codebase is shrinking while complexity is held constant — a healthy indicator.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Why the Silo Ratio sparkline uses cumulative logic</strong></p>
+<p>Complexity and LOC are <em>flow</em> metrics — their values depend entirely on what happened in a given period. The Silo Ratio is a <em>stock</em> metric: a file’s ownership history does not reset when a period boundary is crossed. A file written exclusively by one developer in 2021 is still a silo today, even if it has not been touched recently. Using an activity-based window for silo ratio would cause the metric to drop to zero whenever siloed files are inactive — a misleading signal. The sparkline therefore computes the silo percentage from all commits up to each bucket’s end date, giving a stable, honest view of accumulated knowledge risk.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="warnings-panel">
+<h2>Warnings Panel<a class="headerlink" href="#warnings-panel" title="Link to this heading"></a></h2>
+<p>The Warnings panel shows up to five prioritised warnings derived exclusively from Git history. The backend generates up to ten candidates, ranks them by severity and normalised risk score, and returns the top results.</p>
+<p>Each warning card shows:</p>
+<ul class="simple">
+<li><p>The <strong>file or module</strong> affected</p></li>
+<li><p>The <strong>reason code</strong> and a human-readable label</p></li>
+<li><p>A <strong>severity badge</strong> (Critical or High)</p></li>
+<li><p>A <strong>metric value</strong> with its unit (e.g., <em>risk score 94 / 100</em>, <em>ownership 97 %</em>)</p></li>
+<li><p>A <strong>Details →</strong> link that navigates to the relevant analysis view filtered to that file or module</p></li>
+</ul>
+<p><strong>Warning Types</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 15.0%" />
+<col style="width: 63.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Reason Code</p></th>
+<th class="head"><p>Max Severity</p></th>
+<th class="head"><p>Trigger Condition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">critical_hotspot</span></code></p></td>
+<td><p>Critical</p></td>
+<td><p>Composite hotspot score ≥ 90 % of the highest score in the period (critical) or ≥ 70 % (high). Combines complexity and churn weighting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">silo_risk</span></code></p></td>
+<td><p>Critical</p></td>
+<td><p>One developer accounts for ≥ 95 % of commits to a file (critical) or ≥ 80 % (high). Files with fewer than 5 total commits are excluded.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">complexity_spike</span></code></p></td>
+<td><p>Critical</p></td>
+<td><p>Cognitive complexity trend indicator &gt; 4.0× baseline (critical) or &gt; 3.0× (high).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">churn_outlier</span></code></p></td>
+<td><p>Critical</p></td>
+<td><p>File churn &gt; 5× the project average (critical) or &gt; 3× (high).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">legacy_reactivated</span></code></p></td>
+<td><p>High</p></td>
+<td><p>File age &gt; 365 days <em>and</em> recent churn &gt; 2× the project average. Indicates that dormant, complex code is being actively modified.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Warnings are sorted first by severity (Critical before High), then by normalised risk score descending. This ensures that the most actionable items appear at the top regardless of warning type.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Recommended workflow</strong>: Review the Warnings panel at the start of each sprint. A warning that persists across multiple consecutive periods is a strong signal that it has become structural debt — escalate it to the architecture backlog rather than treating it as a one-off item.</p>
+<p>The most dangerous single pattern is a <code class="docutils literal notranslate"><span class="pre">critical_hotspot</span></code> or <code class="docutils literal notranslate"><span class="pre">complexity_spike</span></code> warning on a file that is simultaneously a <code class="docutils literal notranslate"><span class="pre">silo_risk</span></code>: complex, actively changing code that only one person understands.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="api-endpoints">
+<h2>API Endpoints<a class="headerlink" href="#api-endpoints" title="Link to this heading"></a></h2>
+<p>The dashboard widgets are backed by three dedicated backend endpoints:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Endpoint</p></th>
+<th class="head"><p>Widget</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/v1/analysis/summary</span></code></p></td>
+<td><p>All four KPI cards (current value + trend badge)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/v1/analysis/trends/overview</span></code></p></td>
+<td><p>All three sparkline panels</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/v1/analysis/warnings</span></code></p></td>
+<td><p>Warnings panel</p></td>
+</tr>
+</tbody>
+</table>
+<p>All aggregation, bucketing, and trend calculation is performed in the backend. The frontend renders pre-computed values only. See <a class="reference internal" href="api.html"><span class="doc">API Reference</span></a> for the full request and response schemas.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Dashboard User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025-2026, karl-heinz reichel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -164,7 +164,7 @@
     "/v1/analysis/trends/overview": {
       "post": {
         "summary": "Analyze Trends Overview",
-        "description": "Analyzes trends overview for complexity, loc, and silo ratio over time.\n\nWhen start_date or end_date are omitted the endpoint defaults to the last\n12 months (end = now, start = now - 365 days).",
+        "description": "Analyzes trends overview for complexity, loc, and silo ratio over time.",
         "operationId": "analyze_trends_overview_v1_analysis_trends_overview_post",
         "requestBody": {
           "content": {
@@ -1415,6 +1415,28 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/repository/info": {
+      "get": {
+        "tags": [
+          "Repository"
+        ],
+        "summary": "Get Repository Info",
+        "description": "Retrieves metadata and statistics for the entire repository,\nincluding time span, last import, total commits, active committers,\nand file type distribution.",
+        "operationId": "get_repository_info_v1_repository_info_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepositoryInfoResponse"
                 }
               }
             }
@@ -2904,6 +2926,39 @@
         ],
         "title": "FileTrendSeriesPoint"
       },
+      "FileTypeDistribution": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Language/Type name (e.g., 'TypeScript')"
+          },
+          "value": {
+            "type": "number",
+            "title": "Value",
+            "description": "Percentage value (0-100)"
+          },
+          "color": {
+            "type": "string",
+            "title": "Color",
+            "description": "Hex color code for the chart"
+          },
+          "extension": {
+            "type": "string",
+            "title": "Extension",
+            "description": "File extensions associated with this type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "value",
+          "color",
+          "extension"
+        ],
+        "title": "FileTypeDistribution",
+        "description": "Pydantic model for file type distribution."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -3221,6 +3276,60 @@
         ],
         "title": "LocResponse",
         "description": "Pydantic model for file, module, and total LOC analysis."
+      },
+      "MetricTrend": {
+        "properties": {
+          "current_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Value",
+            "description": "The most recent value of the metric"
+          },
+          "growth_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Growth Pct",
+            "description": "Percentage growth/change compared to baseline period"
+          },
+          "trend": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trend",
+            "description": "Trend direction: 'up', 'down', or 'stable'"
+          },
+          "series": {
+            "items": {
+              "$ref": "#/components/schemas/TrendPoint"
+            },
+            "type": "array",
+            "title": "Series",
+            "description": "Time-series points for the trend"
+          }
+        },
+        "type": "object",
+        "required": [
+          "series"
+        ],
+        "title": "MetricTrend",
+        "description": "Trend information for a specific metric."
       },
       "ModuleContributorItem": {
         "properties": {
@@ -3848,6 +3957,60 @@
         "title": "ModuleTrendsWrapped",
         "description": "Wrapper response model for module trends, exposing data under an `items` key."
       },
+      "RepositoryInfoResponse": {
+        "properties": {
+          "items": {
+            "$ref": "#/components/schemas/RepositoryInfoResult"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "RepositoryInfoResponse",
+        "description": "Pydantic model for the repository info API response."
+      },
+      "RepositoryInfoResult": {
+        "properties": {
+          "time_span": {
+            "$ref": "#/components/schemas/TimeSpanInfo",
+            "description": "Analysis time span information"
+          },
+          "last_import": {
+            "type": "string",
+            "title": "Last Import",
+            "description": "Timestamp of the last data import"
+          },
+          "total_commits": {
+            "type": "integer",
+            "title": "Total Commits",
+            "description": "Total number of commits"
+          },
+          "committers": {
+            "type": "integer",
+            "title": "Committers",
+            "description": "Number of active committers"
+          },
+          "file_types": {
+            "items": {
+              "$ref": "#/components/schemas/FileTypeDistribution"
+            },
+            "type": "array",
+            "title": "File Types",
+            "description": "Top 5 file types distribution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "time_span",
+          "last_import",
+          "total_commits",
+          "committers",
+          "file_types"
+        ],
+        "title": "RepositoryInfoResult",
+        "description": "Pydantic model for the repository metadata results."
+      },
       "ScoreDetail": {
         "properties": {
           "baseline": {
@@ -4132,16 +4295,30 @@
       "SummaryRequest": {
         "properties": {
           "start_date": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Start Date",
-            "description": "Start date for the analysis period"
+            "description": "Start date for the analysis period (defaults to analysis start date)"
           },
           "end_date": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "End Date",
-            "description": "End date for the analysis period"
+            "description": "End date for the analysis period (defaults to current date)"
           },
           "baseline_start_date": {
             "anyOf": [
@@ -4183,10 +4360,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "start_date",
-          "end_date"
-        ],
         "title": "SummaryRequest",
         "description": "Pydantic model for the summary analysis request body."
       },
@@ -4310,6 +4483,33 @@
         ],
         "title": "TeamModuleAlignmentResponse",
         "description": "Response model containing a list of team alignment results."
+      },
+      "TimeSpanInfo": {
+        "properties": {
+          "start": {
+            "type": "string",
+            "title": "Start",
+            "description": "Start of the analysis period (e.g., '01.01.2024')"
+          },
+          "end": {
+            "type": "string",
+            "title": "End",
+            "description": "End of the analysis period (e.g., '07.04.2026')"
+          },
+          "days": {
+            "type": "integer",
+            "title": "Days",
+            "description": "Total number of days in the analysis period"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start",
+          "end",
+          "days"
+        ],
+        "title": "TimeSpanInfo",
+        "description": "Pydantic model for the analysis time span."
       },
       "TimeWindow": {
         "properties": {
@@ -4504,35 +4704,19 @@
             "description": "Number of days per bucket"
           },
           "complexity": {
-            "items": {
-              "$ref": "#/components/schemas/TrendPoint"
-            },
-            "type": "array",
-            "title": "Complexity",
+            "$ref": "#/components/schemas/MetricTrend",
             "description": "Complexity trend over time"
           },
           "loc": {
-            "items": {
-              "$ref": "#/components/schemas/TrendPoint"
-            },
-            "type": "array",
-            "title": "Loc",
+            "$ref": "#/components/schemas/MetricTrend",
             "description": "Lines of code trend over time"
           },
           "silo_ratio": {
-            "items": {
-              "$ref": "#/components/schemas/TrendPoint"
-            },
-            "type": "array",
-            "title": "Silo Ratio",
+            "$ref": "#/components/schemas/MetricTrend",
             "description": "Silo ratio trend over time"
           },
           "commits": {
-            "items": {
-              "$ref": "#/components/schemas/TrendPoint"
-            },
-            "type": "array",
-            "title": "Commits",
+            "$ref": "#/components/schemas/MetricTrend",
             "description": "Commit count trend over time"
           }
         },
@@ -4607,6 +4791,11 @@
             "title": "Module Name",
             "description": "Name of the module or file"
           },
+          "file_path": {
+            "type": "string",
+            "title": "File Path",
+            "description": "Full path to the file"
+          },
           "reason": {
             "type": "string",
             "title": "Reason",
@@ -4636,6 +4825,7 @@
         "type": "object",
         "required": [
           "module_name",
+          "file_path",
           "reason",
           "reason_label",
           "severity",

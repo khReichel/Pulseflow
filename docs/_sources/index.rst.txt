@@ -32,6 +32,7 @@ Check out the :doc:`usage` section for further information, including how to
    installation
    importer_guide
    usage
+   dashboard_overview
    api
    analysis
 
