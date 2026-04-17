@@ -53,13 +53,20 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Dashboard Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#kpi-cards">KPI Cards</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#total-commits"><strong>Total Commits</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#codebase-age"><strong>Codebase Age</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#average-codebase-age"><strong>Average Codebase Age</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#maintainability"><strong>Maintainability</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#knowledge-risk"><strong>Knowledge Risk</strong></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#trend-sparklines">Trend Sparklines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#warnings-panel">Warnings Panel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#repository-insights">Repository Insights</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#top-modules-by-size"><strong>Top Modules by Size</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#most-active-modules"><strong>Most Active Modules</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-contribution"><strong>Module Contribution</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#knowledge-silos-by-developers"><strong>Knowledge Silos by Developers</strong></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#api-endpoints">API Endpoints</a></li>
 </ul>
 </li>
@@ -94,28 +101,19 @@
   <section id="dashboard-overview">
 <span id="id1"></span><h1>Dashboard Overview<a class="headerlink" href="#dashboard-overview" title="Link to this heading"></a></h1>
 <p>The Dashboard is the entry point of the Calyntro UI. It provides an at-a-glance health report of your repository without requiring any prior knowledge of the underlying analyses. All values are pre-computed by the backend; the dashboard itself performs no aggregation.</p>
-<img alt="Calyntro Dashboard Overview" class="align-center" src="_images/dashboard_overview.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>The layout consists of three horizontal sections:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────────────────────┐
-│  KPI Cards (4)                                       │
-│  Total Commits │ Codebase Age │ Maintainability │    │
-│  Knowledge Risk                                      │
-├──────────────────────────────────────────────────────┤
-│  Trend Sparklines (3 panels, shared x-axis)          │
-│  Complexity · Lines of Code · Silo Ratio             │
-├──────────────────────────────────────────────────────┤
-│  Warnings (top 5, ranked by severity)                │
-└──────────────────────────────────────────────────────┘
-</pre></div>
-</div>
-<p>The date range used for all three sections is controlled by the global date filter at the top of the page.</p>
+<img alt="Calyntro Dashboard Overview Top" class="align-center margin-bottom" src="_images/overview_top.png" />
+<p>The layout consists of four main sections:</p>
+<ol class="arabic simple">
+<li><p><strong>KPI Cards</strong>: High-level health indicators.</p></li>
+<li><p><strong>Trend Sparklines</strong>: Time-series progression of key metrics.</p></li>
+<li><p><strong>Warnings Panel</strong>: Prioritised issues requiring immediate attention.</p></li>
+<li><p><strong>Repository Insights</strong>: Detailed breakdowns of modules and contributors.</p></li>
+</ol>
+<p>The date range used for all sections is controlled by the global date filter at the top of the page.</p>
 <hr class="docutils" />
 <section id="kpi-cards">
 <h2>KPI Cards<a class="headerlink" href="#kpi-cards" title="Link to this heading"></a></h2>
-<p>The four KPI cards report the current state of the most critical codebase health indicators. Each card shows a <strong>current value</strong> and a <strong>trend badge</strong> that compares the current value against the equivalent value 30 days earlier.</p>
+<p>The four KPI cards report the current state of the most critical codebase health indicators. Each card shows a <strong>current value</strong> and a <strong>trend badge</strong> that compares the current value against the previous month (30 days).</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 20.0%" />
@@ -136,7 +134,7 @@
 <td><p>Green = up, Red = down</p></td>
 <td><p><a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Module Commits analysis</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Codebase Age</strong></p></td>
+<tr class="row-odd"><td><p><strong>Average Codebase Age</strong></p></td>
 <td><p>Average age of files in days (first commit to last commit)</p></td>
 <td><p>Neutral</p></td>
 <td><p><a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Age analysis</span></a></p></td>
@@ -156,26 +154,19 @@
 <p>Clicking any KPI card navigates to the corresponding detail view, pre-filtered to the current date range.</p>
 <section id="total-commits">
 <h3><strong>Total Commits</strong><a class="headerlink" href="#total-commits" title="Link to this heading"></a></h3>
-<p>Counts the number of distinct commits in the selected period. The trend badge shows the relative change compared to the equivalent metric 30 days prior (i.e., using the same start date but an end date 30 days earlier).</p>
-<p>A declining commit count is not automatically negative — it can indicate that the team has shifted from feature work to stabilisation. Use the Trend Sparklines and Warnings to contextualise the signal.</p>
+<p>Counts the number of distinct commits in the selected period. The trend badge shows the relative change compared to the previous month.</p>
 </section>
-<section id="codebase-age">
-<h3><strong>Codebase Age</strong><a class="headerlink" href="#codebase-age" title="Link to this heading"></a></h3>
-<p>Reports the average age of all files that were touched in the selected period, where <em>age</em> is defined as the number of days between a file’s first commit and its most recent commit. This is a measure of how long files have been in continuous development.</p>
-<p>A rising Codebase Age indicates that the project is maturing and that long-lived files continue to accumulate changes — often a sign of stable-but-complex core components. A sudden drop indicates significant new file creation.</p>
+<section id="average-codebase-age">
+<h3><strong>Average Codebase Age</strong><a class="headerlink" href="#average-codebase-age" title="Link to this heading"></a></h3>
+<p>Reports the average age of all files that were touched in the selected period, where <em>age</em> is defined as the number of days between a file’s first commit and its most recent commit.</p>
 </section>
 <section id="maintainability">
 <h3><strong>Maintainability</strong><a class="headerlink" href="#maintainability" title="Link to this heading"></a></h3>
-<p>Reports the average Cognitive Complexity (see <a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Complexity</span></a>) across all files that were active in the selected period, using the most recent complexity snapshot per file. Lower is better.</p>
-<p>The trend badge is coloured <strong>red when the value rises</strong> (code is becoming harder to maintain) and <strong>green when it falls</strong> (refactoring is paying off).</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>“Maintainability” is intentionally outcome-oriented. The underlying metric is Cognitive Complexity — how difficult a human finds it to read and reason about the code — not Cyclomatic Complexity or raw line count. See <a class="reference internal" href="analysis.html#analysis"><span class="std std-ref">Complexity</span></a> for the full metric definition.</p>
-</div>
+<p>Reports the average Cognitive Complexity across all files that were active in the selected period. Lower is better.</p>
 </section>
 <section id="knowledge-risk">
 <h3><strong>Knowledge Risk</strong><a class="headerlink" href="#knowledge-risk" title="Link to this heading"></a></h3>
-<p>Reports the percentage of files in the repository that are classified as <strong>knowledge silos</strong> — files where a single developer is responsible for 80 % or more of all commits over the file’s lifetime (minimum 5 commits required to qualify).</p>
+<p>Reports the percentage of files in the repository that are classified as <strong>knowledge silos</strong> — files where a single developer is responsible for 80 % or more of all commits over the file’s lifetime.</p>
 <p>Unlike the other KPI cards, Knowledge Risk is a <strong>cumulative, stock metric</strong>: it reflects the state of the entire codebase as of the current date, not only the files that were touched during the selected period. A file established as a silo five years ago remains a silo today unless a second developer actively takes over ownership. The trend badge compares the cumulative silo ratio as of today against the cumulative silo ratio 30 days ago.</p>
 <p>The trend badge is coloured <strong>red when the value rises</strong> (knowledge is becoming more concentrated) and <strong>green when it falls</strong> (ownership is being distributed).</p>
 <div class="admonition tip">
@@ -285,6 +276,28 @@
 </div>
 </section>
 <hr class="docutils" />
+<section id="repository-insights">
+<h2>Repository Insights<a class="headerlink" href="#repository-insights" title="Link to this heading"></a></h2>
+<p>The bottom section provides four specialized panels that break down the repository structure and team activity.</p>
+<img alt="Calyntro Dashboard Overview Bottom" class="align-center margin-bottom" src="_images/overview_bottom.png" />
+<section id="top-modules-by-size">
+<h3><strong>Top Modules by Size</strong><a class="headerlink" href="#top-modules-by-size" title="Link to this heading"></a></h3>
+<p>Displays the modules with the highest number of Lines of Code (LOC). This helps identify the largest functional areas of the codebase which often represent the core business logic or significant architectural components.</p>
+</section>
+<section id="most-active-modules">
+<h3><strong>Most Active Modules</strong><a class="headerlink" href="#most-active-modules" title="Link to this heading"></a></h3>
+<p>Lists modules with the highest commit activity in the selected period. It also shows the <strong>Main Contributor</strong> for each module — the developer with the most commits to that specific module during the period.</p>
+</section>
+<section id="module-contribution">
+<h3><strong>Module Contribution</strong><a class="headerlink" href="#module-contribution" title="Link to this heading"></a></h3>
+<p>Shows the number of distinct developers (authors) who have contributed to each module. Modules with a high author count indicate collaborative development, while those with very low counts might be nearing a knowledge silo state.</p>
+</section>
+<section id="knowledge-silos-by-developers">
+<h3><strong>Knowledge Silos by Developers</strong><a class="headerlink" href="#knowledge-silos-by-developers" title="Link to this heading"></a></h3>
+<p>Identifies individual developers who are the primary owners of knowledge silos. It lists the number of files for which the developer is the sole or dominant expert. Each entry includes a <strong>Risk Level</strong> badge (Critical, High, Medium, Low) based on the concentration of silos per developer.</p>
+</section>
+</section>
+<hr class="docutils" />
 <section id="api-endpoints">
 <h2>API Endpoints<a class="headerlink" href="#api-endpoints" title="Link to this heading"></a></h2>
 <p>The dashboard widgets are backed by three dedicated backend endpoints:</p>
@@ -307,6 +320,18 @@
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/v1/analysis/warnings</span></code></p></td>
 <td><p>Warnings panel</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/v1/analysis/top-loc-modules</span></code></p></td>
+<td><p>Top Modules by Size</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/v1/analysis/top-active-modules</span></code></p></td>
+<td><p>Most Active Modules</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/v1/analysis/top-contributors</span></code></p></td>
+<td><p>Module Contribution</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/v1/analysis/developer-silos</span></code></p></td>
+<td><p>Knowledge Silos by Developers</p></td>
 </tr>
 </tbody>
 </table>

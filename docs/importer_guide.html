@@ -117,8 +117,18 @@
 </section>
 <section id="prepare-configuration">
 <h3>2. Prepare Configuration<a class="headerlink" href="#prepare-configuration" title="Link to this heading"></a></h3>
-<p>Navigate to the <code class="docutils literal notranslate"><span class="pre">config</span></code> directory and set up your <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file. You can usually start by copying an example template provided in the release.</p>
-<p>Ensure you configure your modules, teams, and exclusions correctly. For detailed information on all configuration options, please refer to the <a class="reference internal" href="config_guide.html#config-guide"><span class="std std-ref">Configuration Guide</span></a>.</p>
+<p>The easiest way to get started is to use the <code class="docutils literal notranslate"><span class="pre">generate_config.sh</span></code> script. It scans your Git repository and automatically generates a draft <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> with:</p>
+<ul class="simple">
+<li><p><strong>Users</strong>: All commit authors and their email aliases.</p></li>
+<li><p><strong>Components</strong>: Automatically detected source-code directories.</p></li>
+<li><p><strong>Exclusions</strong>: Folders and file extensions that typically do not contain source code.</p></li>
+</ul>
+<p>Run the following command (requires Docker):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./scripts/generate_config.sh<span class="w"> </span>/path/to/your/repository<span class="w"> </span>-o<span class="w"> </span>config/config.yaml
+</pre></div>
+</div>
+<p>Alternatively, you can manually create your <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> using an example template provided in the release.</p>
+<p>Ensure you review the generated file to refine components, teams, and exclusions. For detailed information on all configuration options, please refer to the <a class="reference internal" href="config_guide.html#config-guide"><span class="std std-ref">Configuration Guide</span></a>.</p>
 </section>
 <section id="mount-target-repository">
 <h3>3. Mount Target Repository<a class="headerlink" href="#mount-target-repository" title="Link to this heading"></a></h3>

@@ -5,7 +5,21 @@ Calyntro Configuration File
 
 The ``config.yaml`` file is the central place to configure the analysis performed by Calyntro. It defines the project settings, what to include and exclude from the analysis, and how to map users to teams.
 
-This document describes the structure and purpose of each section in the configuration file.
+Generating a Draft Configuration
+--------------------------------
+
+Instead of writing the configuration from scratch, you can generate a draft by scanning your repository. This will automatically populate users, common file exclusions, and suggest logical components based on your directory structure.
+
+.. code-block:: bash
+
+   ./scripts/generate_config.sh /path/to/your/repository -o config/config.yaml
+
+This script runs within the Calyntro backend Docker image and does not require local Python dependencies.
+
+Manual Configuration
+--------------------
+
+If you prefer to write the file manually, follow the structure below.
 
 Project Section
 ---------------
@@ -53,6 +67,10 @@ The ``analysis`` section defines the scope of the code analysis, including which
        - ".md"
        # ... other extensions
 
+     excluded_patterns:
+       - "_test\\.(cpp|cc|py|go|java|ts|js)$"
+       - "/(test|tests|spec|__tests__)/"
+
 *   **components**: A list of objects, each representing a logical component of the software.
 
     *   **component_name**: A unique identifier for the component.
@@ -62,6 +80,8 @@ The ``analysis`` section defines the scope of the code analysis, including which
 *   **excluded_prefixes**: A list of directory paths to be excluded from the analysis. Any file or directory starting with one of these prefixes will be ignored.
 
 *   **excluded_extensions**: A list of file extensions to be excluded from the analysis. Files with these extensions will be ignored.
+
+*   **excluded_patterns**: A list of regular expression patterns matched against the full file path (using ``re.search``). Files matching any of these patterns will be excluded from import and all analysis views. This is useful for excluding test files or specific directory patterns that cannot be easily captured by prefixes or extensions alone.
 
 Users and Teams
 ---------------

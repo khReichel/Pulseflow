@@ -53,6 +53,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#navigation-filtering">Navigation &amp; Filtering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#views">Views</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#table-view">1. Table View</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-details">6. File Details</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#hotspot-analysis">2. Hotspot Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#code-map">3. Code Map</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#trend-analysis">4. Trend Analysis</a></li>
@@ -93,7 +94,7 @@
   <section id="dashboard-user-guide">
 <span id="usage"></span><h1>Dashboard User Guide<a class="headerlink" href="#dashboard-user-guide" title="Link to this heading"></a></h1>
 <p>The Calyntro Dashboard is your central hub for exploring the health and evolution of your software project. This guide explains how to navigate the interface and use its features effectively.</p>
-<img alt="Calyntro Dashboard Overview" class="align-center" src="_images/dashboard_overview.png" />
+<img alt="Calyntro Dashboard Detail" class="align-center margin-bottom" src="_images/dashboard_detail.png" />
 <section id="navigation-filtering">
 <h2>Navigation &amp; Filtering<a class="headerlink" href="#navigation-filtering" title="Link to this heading"></a></h2>
 <p>The analysis controls are grouped in a card at the top of the Analysis View page.
@@ -136,29 +137,54 @@ session, so you retain your time context as you move between perspectives.</p>
 <ul class="simple">
 <li><p><strong>Sort</strong>: Click any column header to sort by that metric.</p></li>
 <li><p><strong>Quick Actions</strong>:
-*   <strong>Eye Icon</strong>: Opens a summary panel on the right side.
-*   <strong>External Link Icon</strong>: Opens a full-screen detail modal with file history and all available metrics.</p></li>
+*   <strong>Eye Icon</strong>: Opens a side panel with detailed information about the selected file.</p></li>
 </ul>
+<img alt="Calyntro Table View" class="align-center margin-bottom" src="_images/tableview.png" />
+</section>
+<section id="file-details">
+<h3>6. File Details<a class="headerlink" href="#file-details" title="Link to this heading"></a></h3>
+<p>When you click the <strong>Eye Icon</strong> in the Table View, the <strong>File Detail View</strong> opens on the right side. This view provides a deep dive into the selected file’s health and history.</p>
+<a class="margin-bottom reference internal image-reference" href="_images/file_details.png"><img alt="Calyntro File Detail View" class="align-center margin-bottom" src="_images/file_details.png" style="width: 500px;" />
+</a>
+<p>The File Detail View is structured into several sections:</p>
+<ul class="simple">
+<li><p><strong>Header</strong>: Displays the full file path, the assigned module, the date of the last modification, and the total number of contributors.</p></li>
+<li><p><strong>KPI Cards</strong>: Four key metrics are highlighted at the top:
+*   <strong>Complexity</strong>: The current cyclomatic complexity of the file.
+*   <strong>Churn Rate</strong>: The frequency of changes relative to the analysis period.
+*   <strong>Hotspot Score</strong>: A composite risk value (0–100) indicating the file’s importance as a potential refactoring candidate.
+*   <strong>Silo Risk</strong>: The percentage of knowledge concentrated in too few developers.</p></li>
+<li><p><strong>Metrics Tab</strong>:
+*   <strong>Code Metrics</strong>: Shows basic statistics like Lines of Code (LOC).
+*   <strong>Complexity</strong>: Detailed values for Cyclomatic and Cognitive Complexity, including a qualitative rating (Low to Critical).
+*   <strong>Activity</strong>: Historical data including total number of commits, absolute code churn, file age in days, and a list of all contributors.</p></li>
+<li><p><strong>Trends Tab</strong>: Visualizes the percentage change of the four main KPIs over the selected analysis period, helping you identify whether a file’s health is improving or deteriorating.</p></li>
+</ul>
+<p>Many metrics in the detail view are interactive. Clicking on a metric (where available) will navigate you to the corresponding visual analysis view for the entire module, allowing you to see the file in its broader architectural context.</p>
 </section>
 <section id="hotspot-analysis">
 <h3>2. Hotspot Analysis<a class="headerlink" href="#hotspot-analysis" title="Link to this heading"></a></h3>
 <p>A heatmap matrix showing all modules across five risk dimensions simultaneously: Complexity, Change Frequency, Silo Risk, Absolute Churn, and Code Age. Each cell is coloured on a 0–100 scale relative to the current module set.</p>
 <p>Use this view to <strong>compare modules across multiple risk axes at a glance</strong> — a module that scores red across three or more dimensions simultaneously warrants immediate architectural attention.</p>
+<img alt="Calyntro Hotspot View" class="align-center margin-bottom" src="_images/hotspot.png" />
 </section>
 <section id="code-map">
 <h3>3. Code Map<a class="headerlink" href="#code-map" title="Link to this heading"></a></h3>
 <p>A treemap in which cell <strong>area</strong> represents Lines of Code and cell <strong>colour</strong> represents composite risk (60 % cognitive complexity + 40 % churn, both normalised). Large red cells are the most critical: they are high-volume modules that are both cognitively demanding and actively churning.</p>
 <p>Use this view to <strong>calibrate effort against impact</strong> — it makes immediately visible whether your most complex code is also your biggest code.</p>
+<img alt="Calyntro Codemap View" class="align-center margin-bottom" src="_images/codemap.png" />
 </section>
 <section id="trend-analysis">
 <h3>4. Trend Analysis<a class="headerlink" href="#trend-analysis" title="Link to this heading"></a></h3>
 <p>Line or area charts of up to ten modules over time, with a shared time axis. Four metrics are selectable via toggle buttons: Cognitive Complexity, Lines of Code, Silo Ratio, and Commits.</p>
 <p>Use this view to <strong>detect directional problems early</strong> — a module whose complexity and LOC are both rising over multiple periods is accumulating structural debt, regardless of how it looks in a point-in-time snapshot.</p>
+<img alt="Calyntro Trend View" class="align-center margin-bottom" src="_images/lines.png" />
 </section>
 <section id="scatter-analysis">
 <h3>5. Scatter Analysis<a class="headerlink" href="#scatter-analysis" title="Link to this heading"></a></h3>
 <p>A bubble chart plotting Cognitive Complexity (X-axis) against Absolute Churn (Y-axis) for every module, with bubble size proportional to code age. Both axes are logarithmic. Dashed reference lines mark the project medians, dividing the chart into four quadrants: Hotspots (red), Dormant Risk (purple), Non-critical Churn (yellow), and Healthy (green).</p>
 <p>Use this view to <strong>prioritise refactoring candidates</strong> — modules in the top-right red quadrant are the statistically most likely sources of future defects.</p>
+<img alt="Calyntro Scatter View" class="align-center margin-bottom" src="_images/scatter.png" />
 </section>
 </section>
 </section>

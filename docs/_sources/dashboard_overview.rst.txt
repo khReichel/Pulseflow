@@ -5,35 +5,27 @@ Dashboard Overview
 
 The Dashboard is the entry point of the Calyntro UI. It provides an at-a-glance health report of your repository without requiring any prior knowledge of the underlying analyses. All values are pre-computed by the backend; the dashboard itself performs no aggregation.
 
-.. image:: /_static/dashboard_overview.png
-   :alt: Calyntro Dashboard Overview
+.. image:: /_static/overview_top.png
+   :alt: Calyntro Dashboard Overview Top
    :align: center
+   :class: margin-bottom
 
-|
 
-The layout consists of three horizontal sections:
+The layout consists of four main sections:
 
-.. code-block:: text
+1. **KPI Cards**: High-level health indicators.
+2. **Trend Sparklines**: Time-series progression of key metrics.
+3. **Warnings Panel**: Prioritised issues requiring immediate attention.
+4. **Repository Insights**: Detailed breakdowns of modules and contributors.
 
-   ┌──────────────────────────────────────────────────────┐
-   │  KPI Cards (4)                                       │
-   │  Total Commits │ Codebase Age │ Maintainability │    │
-   │  Knowledge Risk                                      │
-   ├──────────────────────────────────────────────────────┤
-   │  Trend Sparklines (3 panels, shared x-axis)          │
-   │  Complexity · Lines of Code · Silo Ratio             │
-   ├──────────────────────────────────────────────────────┤
-   │  Warnings (top 5, ranked by severity)                │
-   └──────────────────────────────────────────────────────┘
-
-The date range used for all three sections is controlled by the global date filter at the top of the page.
+The date range used for all sections is controlled by the global date filter at the top of the page.
 
 ---------
 
 KPI Cards
 ---------
 
-The four KPI cards report the current state of the most critical codebase health indicators. Each card shows a **current value** and a **trend badge** that compares the current value against the equivalent value 30 days earlier.
+The four KPI cards report the current state of the most critical codebase health indicators. Each card shows a **current value** and a **trend badge** that compares the current value against the previous month (30 days).
 
 .. list-table::
    :header-rows: 1
@@ -47,7 +39,7 @@ The four KPI cards report the current state of the most critical codebase health
      - Number of distinct commits in the selected period
      - Green = up, Red = down
      - :ref:`Module Commits analysis <analysis>`
-   * - **Codebase Age**
+   * - **Average Codebase Age**
      - Average age of files in days (first commit to last commit)
      - Neutral
      - :ref:`Age analysis <analysis>`
@@ -65,32 +57,22 @@ Clicking any KPI card navigates to the corresponding detail view, pre-filtered t
 **Total Commits**
 ^^^^^^^^^^^^^^^^^
 
-Counts the number of distinct commits in the selected period. The trend badge shows the relative change compared to the equivalent metric 30 days prior (i.e., using the same start date but an end date 30 days earlier).
+Counts the number of distinct commits in the selected period. The trend badge shows the relative change compared to the previous month.
 
-A declining commit count is not automatically negative — it can indicate that the team has shifted from feature work to stabilisation. Use the Trend Sparklines and Warnings to contextualise the signal.
+**Average Codebase Age**
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Codebase Age**
-^^^^^^^^^^^^^^^^
-
-Reports the average age of all files that were touched in the selected period, where *age* is defined as the number of days between a file's first commit and its most recent commit. This is a measure of how long files have been in continuous development.
-
-A rising Codebase Age indicates that the project is maturing and that long-lived files continue to accumulate changes — often a sign of stable-but-complex core components. A sudden drop indicates significant new file creation.
+Reports the average age of all files that were touched in the selected period, where *age* is defined as the number of days between a file's first commit and its most recent commit.
 
 **Maintainability**
 ^^^^^^^^^^^^^^^^^^^
 
-Reports the average Cognitive Complexity (see :ref:`Complexity <analysis>`) across all files that were active in the selected period, using the most recent complexity snapshot per file. Lower is better.
-
-The trend badge is coloured **red when the value rises** (code is becoming harder to maintain) and **green when it falls** (refactoring is paying off).
-
-.. note::
-
-   "Maintainability" is intentionally outcome-oriented. The underlying metric is Cognitive Complexity — how difficult a human finds it to read and reason about the code — not Cyclomatic Complexity or raw line count. See :ref:`Complexity <analysis>` for the full metric definition.
+Reports the average Cognitive Complexity across all files that were active in the selected period. Lower is better.
 
 **Knowledge Risk**
 ^^^^^^^^^^^^^^^^^^
 
-Reports the percentage of files in the repository that are classified as **knowledge silos** — files where a single developer is responsible for 80 % or more of all commits over the file's lifetime (minimum 5 commits required to qualify).
+Reports the percentage of files in the repository that are classified as **knowledge silos** — files where a single developer is responsible for 80 % or more of all commits over the file's lifetime.
 
 Unlike the other KPI cards, Knowledge Risk is a **cumulative, stock metric**: it reflects the state of the entire codebase as of the current date, not only the files that were touched during the selected period. A file established as a silo five years ago remains a silo today unless a second developer actively takes over ownership. The trend badge compares the cumulative silo ratio as of today against the cumulative silo ratio 30 days ago.
 
@@ -192,6 +174,39 @@ Warnings are sorted first by severity (Critical before High), then by normalised
 
 ---------
 
+Repository Insights
+-------------------
+
+The bottom section provides four specialized panels that break down the repository structure and team activity.
+
+.. image:: /_static/overview_bottom.png
+   :alt: Calyntro Dashboard Overview Bottom
+   :align: center
+   :class: margin-bottom
+
+
+**Top Modules by Size**
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Displays the modules with the highest number of Lines of Code (LOC). This helps identify the largest functional areas of the codebase which often represent the core business logic or significant architectural components.
+
+**Most Active Modules**
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Lists modules with the highest commit activity in the selected period. It also shows the **Main Contributor** for each module — the developer with the most commits to that specific module during the period.
+
+**Module Contribution**
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Shows the number of distinct developers (authors) who have contributed to each module. Modules with a high author count indicate collaborative development, while those with very low counts might be nearing a knowledge silo state.
+
+**Knowledge Silos by Developers**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Identifies individual developers who are the primary owners of knowledge silos. It lists the number of files for which the developer is the sole or dominant expert. Each entry includes a **Risk Level** badge (Critical, High, Medium, Low) based on the concentration of silos per developer.
+
+---------
+
 API Endpoints
 -------------
 
@@ -209,5 +224,13 @@ The dashboard widgets are backed by three dedicated backend endpoints:
      - All three sparkline panels
    * - ``POST /api/v1/analysis/warnings``
      - Warnings panel
+   * - ``GET /api/v1/analysis/top-loc-modules``
+     - Top Modules by Size
+   * - ``GET /api/v1/analysis/top-active-modules``
+     - Most Active Modules
+   * - ``GET /api/v1/analysis/top-contributors``
+     - Module Contribution
+   * - ``GET /api/v1/analysis/developer-silos``
+     - Knowledge Silos by Developers
 
 All aggregation, bucketing, and trend calculation is performed in the backend. The frontend renders pre-computed values only. See :doc:`api` for the full request and response schemas.

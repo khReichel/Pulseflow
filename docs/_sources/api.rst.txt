@@ -42,6 +42,98 @@ Most list-based responses wrap the results in an ``items`` array:
 
 --------------------------------------------------------------------------------
 
+Repository & Files
+------------------
+
+Get Repository Info
+~~~~~~~~~~~~~~~~~~~
+Retrieves metadata and statistics for the entire repository, including time span, last import, total commits, active committers, and file type distribution.
+
+*   **URL:** ``/v1/repository/info``
+*   **Method:** ``GET``
+
+**Response:**
+
+.. code-block:: json
+
+   {
+     "items": {
+       "time_span": {
+         "start": "01.01.2024",
+         "end": "17.04.2026",
+         "days": 837
+       },
+       "last_import": "2026-04-17 14:30:00",
+       "total_commits": 5676,
+       "committers": 42,
+       "file_types": [
+         {
+           "name": "TypeScript",
+           "value": 45.2,
+           "color": "#3178c6",
+           "extension": ".ts, .tsx"
+         },
+         {
+           "name": "Python",
+           "value": 20.5,
+           "color": "#3572A5",
+           "extension": ".py"
+         },
+         {
+           "name": "Other",
+           "value": 34.3,
+           "color": "#cccccc",
+           "extension": ""
+         }
+       ]
+     }
+   }
+
+Get File Details
+~~~~~~~~~~~~~~~~
+Returns comprehensive metrics, KPIs, and activity history for a specific file.
+
+*   **URL:** ``/v1/files/details``
+*   **Method:** ``GET``
+
+**Query Parameters:**
+
+*   ``file_path`` (required): The full path of the file.
+*   ``start_date`` (optional): Analysis start date.
+*   ``end_date`` (optional): Analysis end date.
+
+**Response:**
+
+.. code-block:: json
+
+   {
+     "meta": {
+       "file_path": "src/core/main.py",
+       "module": "core",
+       "last_modified": "2024-03-15T10:00:00",
+       "contributor_count": 5,
+       "contributor_names": ["Alice", "Bob"]
+     },
+     "kpis": {
+       "complexity": { "value": 42.0, "trend_pct": 5.0 },
+       "churn_rate": { "value": 12.5, "trend_pct": -2.1 },
+       "hotspot_score": { "value": 0.85, "trend_pct": 0.0 },
+       "silo_risk_pct": { "value": 0.0, "trend_pct": 0.0 }
+     },
+     "metrics": {
+       "loc": 450,
+       "cyclomatic": 25,
+       "cognitive": 18
+     },
+     "activity": {
+       "commits": 124,
+       "churn": 1540,
+       "file_age_days": 450
+     }
+   }
+
+--------------------------------------------------------------------------------
+
 Lines of Code (LOC)
 -------------------
 
@@ -1227,8 +1319,10 @@ KPI indicator.
 .. code-block:: json
 
    {
-     "total_commits": 1808,
-     "growth_pct":    12.5
+     "items": {
+       "total_commits": 1808,
+       "growth_pct": 12.5
+     }
    }
 
 .. list-table:: Response Fields
@@ -1266,8 +1360,10 @@ Files with zero cognitive complexity (e.g. non-code assets) are excluded.
 .. code-block:: json
 
    {
-     "avg_cognitive": 23.4,
-     "growth_pct":     3.1
+     "items": {
+       "avg_cognitive": 23.4,
+       "growth_pct": 3.1
+     }
    }
 
 .. list-table:: Response Fields
@@ -1310,8 +1406,10 @@ All parameters are optional. Defaults: ``silo_threshold`` = ``0.80``,
 .. code-block:: json
 
    {
-     "silo_count": 14,
-     "growth_pct":  7.7
+     "items": {
+       "silo_count": 14,
+       "growth_pct": 7.7
+     }
    }
 
 .. list-table:: Response Fields
@@ -1360,8 +1458,10 @@ Returns the project-wide average file age and its growth trend.
 .. code-block:: json
 
    {
-     "avg_file_age_days": 47.5,
-     "growth_pct": -5.3
+     "items": {
+       "avg_file_age_days": 47.5,
+       "growth_pct": -5.3
+     }
    }
 
 .. list-table:: Response Fields
@@ -1389,13 +1489,25 @@ Returns the configured start date for the current analysis session.
 .. code-block:: json
 
    {
-     "analysis_since": "2020-01-01T00:00:00"
+     "items": {
+       "analysis_since": "2020-01-01T00:00:00"
+     }
    }
 
 
 API Info
 ~~~~~~~~
-Returns metadata about the currently running analysis session.
+Returns metadata about the currently running analysis session, including database paths.
 
 *   **URL:** ``/v1/info``
 *   **Method:** ``GET``
+
+**Response:**
+
+.. code-block:: json
+
+   {
+     "analysis_database": "/path/to/analysis.duckdb",
+     "config_database": "/path/to/config.duckdb",
+     "debug": false
+   }

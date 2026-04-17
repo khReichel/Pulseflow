@@ -31,9 +31,21 @@ First, pull the latest pre-built Calyntro images from the registry:
 2. Prepare Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Navigate to the ``config`` directory and set up your ``config.yaml`` file. You can usually start by copying an example template provided in the release.
+The easiest way to get started is to use the ``generate_config.sh`` script. It scans your Git repository and automatically generates a draft ``config.yaml`` with:
 
-Ensure you configure your modules, teams, and exclusions correctly. For detailed information on all configuration options, please refer to the :ref:`Configuration Guide <config_guide>`.
+*   **Users**: All commit authors and their email aliases.
+*   **Components**: Automatically detected source-code directories.
+*   **Exclusions**: Folders and file extensions that typically do not contain source code.
+
+Run the following command (requires Docker):
+
+.. code-block:: bash
+
+   ./scripts/generate_config.sh /path/to/your/repository -o config/config.yaml
+
+Alternatively, you can manually create your ``config.yaml`` using an example template provided in the release.
+
+Ensure you review the generated file to refine components, teams, and exclusions. For detailed information on all configuration options, please refer to the :ref:`Configuration Guide <config_guide>`.
 
 3. Mount Target Repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -52,6 +52,8 @@
 <li class="toctree-l2"><a class="reference internal" href="installation.html#getting-the-deployment-files">Getting the Deployment Files</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="installation.html#next-steps">Next Steps</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Calyntro Configuration File</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#generating-a-draft-configuration">Generating a Draft Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-configuration">Manual Configuration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project-section">Project Section</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#analysis-section">Analysis Section</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#users-and-teams">Users and Teams</a></li>
@@ -98,7 +100,18 @@
   <section id="calyntro-configuration-file">
 <span id="config-guide"></span><h1>Calyntro Configuration File<a class="headerlink" href="#calyntro-configuration-file" title="Link to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file is the central place to configure the analysis performed by Calyntro. It defines the project settings, what to include and exclude from the analysis, and how to map users to teams.</p>
-<p>This document describes the structure and purpose of each section in the configuration file.</p>
+<section id="generating-a-draft-configuration">
+<h2>Generating a Draft Configuration<a class="headerlink" href="#generating-a-draft-configuration" title="Link to this heading"></a></h2>
+<p>Instead of writing the configuration from scratch, you can generate a draft by scanning your repository. This will automatically populate users, common file exclusions, and suggest logical components based on your directory structure.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./scripts/generate_config.sh<span class="w"> </span>/path/to/your/repository<span class="w"> </span>-o<span class="w"> </span>config/config.yaml
+</pre></div>
+</div>
+<p>This script runs within the Calyntro backend Docker image and does not require local Python dependencies.</p>
+</section>
+<section id="manual-configuration">
+<h2>Manual Configuration<a class="headerlink" href="#manual-configuration" title="Link to this heading"></a></h2>
+<p>If you prefer to write the file manually, follow the structure below.</p>
+</section>
 <section id="project-section">
 <h2>Project Section<a class="headerlink" href="#project-section" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">project</span></code> section contains general settings for the project and the analysis.</p>
@@ -139,6 +152,10 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;.json&quot;</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;.md&quot;</span>
 <span class="w">    </span><span class="c1"># ... other extensions</span>
+
+<span class="w">  </span><span class="nt">excluded_patterns</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;_test\\.(cpp|cc|py|go|java|ts|js)$&quot;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/(test|tests|spec|__tests__)/&quot;</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -151,6 +168,7 @@
 </li>
 <li><p><strong>excluded_prefixes</strong>: A list of directory paths to be excluded from the analysis. Any file or directory starting with one of these prefixes will be ignored.</p></li>
 <li><p><strong>excluded_extensions</strong>: A list of file extensions to be excluded from the analysis. Files with these extensions will be ignored.</p></li>
+<li><p><strong>excluded_patterns</strong>: A list of regular expression patterns matched against the full file path (using <code class="docutils literal notranslate"><span class="pre">re.search</span></code>). Files matching any of these patterns will be excluded from import and all analysis views. This is useful for excluding test files or specific directory patterns that cannot be easily captured by prefixes or extensions alone.</p></li>
 </ul>
 </section>
 <section id="users-and-teams">
