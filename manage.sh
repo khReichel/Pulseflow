@@ -176,6 +176,14 @@ case "$1" in
 
   # 4. Maintenance Commands
   pull-latest)
+    ensure_volume_dir "./data"
+    ensure_volume_dir "./exports"
+    ensure_volume_dir "./repo"
+    ensure_volume_dir "./grafana"
+    ensure_volume_dir "./grafana/data"
+    ensure_volume_dir "./grafana/provisioning"
+    ensure_volume_dir "./grafana/provisioning/dashboards"
+    ensure_volume_dir "./grafana/provisioning/datasources"
     echo "Pulling latest images from GitHub..."
     docker login ghcr.io
     docker compose pull
