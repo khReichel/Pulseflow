@@ -147,11 +147,18 @@ case "$1" in
       REPO_DIR=""
 
       if [ -z "$2" ]; then
-          REPO_DIR=$(read_yaml_key "repo_path")
+          REPO_DIR_CONFIG=$(read_yaml_key "repo_path")
 
-          if [ -z "$REPO_DIR" ]; then
+          if [ -z "$REPO_DIR_CONFIG" ]; then
               echo "Error: Could not read 'repo_path' from $CONFIG_FILE"
               exit 1
+          fi
+
+          # For validation and REPO_PATH_HOST, convert container absolute path to host relative path if it starts with /
+          if [[ "$REPO_DIR_CONFIG" == /* ]]; then
+              REPO_DIR=".${REPO_DIR_CONFIG}"
+          else
+              REPO_DIR="$REPO_DIR_CONFIG"
           fi
 
           echo "Using repository path from config: $REPO_DIR"
