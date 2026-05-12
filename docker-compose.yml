@@ -1,10 +1,10 @@
 name: calyntro
 services:
-  # The Gateway (Nginx) routes traffic: /api/ -> Backend, everything else -> UI
   gateway:
     image: nginx:alpine
     ports:
-      - "8765:80"
+      - "127.0.0.1:8765:80"
+    restart: unless-stopped
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
@@ -13,7 +13,6 @@ services:
     networks:
       - calyntro-network
 
-  # --- Calyntro Backend ---
   backend:
     image: ghcr.io/khreichel/calyntro-backend:latest
     container_name: calyntro-backend
@@ -30,7 +29,6 @@ services:
     networks:
       - calyntro-network
 
-  # --- Calyntro UI ---
   ui:
     image: ghcr.io/khreichel/calyntro-ui:latest
     container_name: calyntro-ui
@@ -38,12 +36,10 @@ services:
     networks:
       - calyntro-network
 
-  # --- Calyntro Importer (Run on demand: docker compose run importer) ---
   importer:
     image: ghcr.io/khreichel/calyntro-backend:latest
     container_name: calyntro-importer
     user: "${HOST_UID}:${HOST_GID}"
-
     profiles:
       - tools
     extra_hosts:
